@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 
+const DEV_PASSWORD = "rqstudio2026";
+
 const products = [
   {
     name: "Studio Heavy Tee",
@@ -25,6 +27,112 @@ const products = [
 function App() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+
+  const [developerMode, setDeveloperMode] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const unlockDeveloperMode = (e) => {
+    e.preventDefault();
+
+    if (password === DEV_PASSWORD) {
+      setDeveloperMode(true);
+      setPasswordOpen(false);
+      setPassword("");
+      setPasswordError("");
+    } else {
+      setPasswordError("Wrong password. Try again.");
+    }
+  };
+
+  if (!developerMode) {
+    return (
+      <main className="coming-soon-page">
+        <div className="coming-top-bar">
+          <a
+            className="instagram-link"
+            href="https://www.instagram.com/mors.v/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="RQSTUDIO Instagram"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+            </svg>
+          </a>
+
+          <p>RQSTUDIO — SCREEN PRINTING / CLOTHING BRANDING / TUFTING</p>
+
+          <button
+            className="developer-login-button"
+            onClick={() => setPasswordOpen(true)}
+          >
+            DEVELOPER
+          </button>
+        </div>
+
+        <section className="coming-soon-hero">
+          <p className="coming-eyebrow">RQSTUDIO</p>
+          <h1>COMING SOON</h1>
+          <p>
+            A screen-printing based clothing and tufting studio creating custom
+            pieces, bold textures, and wearable identity.
+          </p>
+
+          <div className="coming-tags">
+            <span>SCREEN PRINTING</span>
+            <span>CLOTHING BRANDING</span>
+            <span>TUFTING</span>
+          </div>
+        </section>
+
+        {passwordOpen && (
+          <div className="password-overlay">
+            <button
+              className="close-password"
+              onClick={() => {
+                setPasswordOpen(false);
+                setPassword("");
+                setPasswordError("");
+              }}
+            >
+              CLOSE
+            </button>
+
+            <form className="password-box" onSubmit={unlockDeveloperMode}>
+              <p className="coming-eyebrow">DEVELOPER ACCESS</p>
+              <h2>Enter Password</h2>
+
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoFocus
+              />
+
+              {passwordError && <p className="password-error">{passwordError}</p>}
+
+              <button type="submit">ENTER SITE</button>
+            </form>
+          </div>
+        )}
+      </main>
+    );
+  }
 
   return (
     <main className="site">
@@ -53,9 +161,14 @@ function App() {
           </svg>
         </a>
 
-        <p>RQSTUDIO — SCREEN PRINTING / CLOTHING BRANDING / TUFTING</p>
+        <p>RQSTUDIO — DEVELOPER PREVIEW</p>
 
-        <div></div>
+        <button
+          className="developer-login-button"
+          onClick={() => setDeveloperMode(false)}
+        >
+          LOCK
+        </button>
       </div>
 
       <header className="header">
